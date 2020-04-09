@@ -1,35 +1,54 @@
 package user;
 
+import org.jdbi.v3.sqlobject.config.RegisterBeanMapper;
+import org.jdbi.v3.sqlobject.customizer.Bind;
+import org.jdbi.v3.sqlobject.customizer.BindBean;
+import org.jdbi.v3.sqlobject.statement.GetGeneratedKeys;
+import org.jdbi.v3.sqlobject.statement.SqlQuery;
+import org.jdbi.v3.sqlobject.statement.SqlUpdate;
+
+import java.time.LocalDate;
 import java.util.Optional;
 import java.util.List;
 
-public class UserDao {
+@RegisterBeanMapper(User.class)
+public interface UserDao {
 
-    private void createTable() {
 
-    }
+    @SqlUpdate("""
+        CREATE TABLE usertable (
+            id IDENTITY PRIMARY KEY,
+            username VARCHAR ,
+            password VARCHAR ,
+            name VARCHAR ,
+            email VARCHAR ,
+            gender VARCHAR ,
+            dob DATE ,
+            enabled BIT 
+        )
+        """
+    )
+    void createTable();
 
-    private Long insert(User user) {
+    @SqlUpdate("INSERT INTO usertable VALUES(:id, :username, :password, :name, :email, :gender, :dob, :enabled)")
+    @GetGeneratedKeys("id")
+    Long insertUser(@Bind("username") String username, @Bind("password") String password, @Bind("name") String name, @Bind("email") String email, @Bind("gender") User.Gender gender, @Bind("dob") LocalDate dob,@Bind("enabled") boolean enabled);
 
-        return null; //nem null fog kelleni,csak azért van itt h ne jelezzen hibát amiért nem void a metóuds
-    }
 
-    private Optional<User> findById(long id) {
+    @SqlUpdate("INSERT INTO usertable VALUES(:id, :username, :password, :name, :email, :gender, :dob, :enabled)")
+    @GetGeneratedKeys("id")
+    Long insertUser(@BindBean User user); 
 
-        return null;
-    }
+    @SqlQuery("SELECT * FROM usertable WHERE id =:id")
+    Optional<User> findById(@Bind("id") long id);
 
-    private Optional<User> findByUsername(String username) {
 
-        return null;
-    }
+    @SqlQuery("SELECT * FROM usertable WHERE username = :username")
+    Optional<User> findByUsername(@Bind("username") String username);
 
-    private void delete(User user) {
+    @SqlUpdate("DELETE * FROM usertable WHERE  id = :id")
+    void delete(@Bind("id") Long id); //????
 
-    }
-
-    private List<User> list() {
-
-        return null;
-    }
+    @SqlQuery("SELECT * FROM usertable ORDER BY username")
+    List<User> listUsers();
 }
