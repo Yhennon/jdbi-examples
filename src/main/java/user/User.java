@@ -1,5 +1,6 @@
 package user;
 
+
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,5 +27,7 @@ public class User {
     private LocalDate dob;
     private boolean enabled;
 
+
 }
+
 

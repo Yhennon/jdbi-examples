@@ -18,12 +18,12 @@ public interface UserDao {
     @SqlUpdate("""
         CREATE TABLE usertable (
             id IDENTITY PRIMARY KEY,
-            username VARCHAR ,
-            password VARCHAR ,
-            name VARCHAR ,
-            email VARCHAR ,
-            gender VARCHAR ,
-            dob DATE ,
+            username VARCHAR UNIQUE NOT NULL,
+            password VARCHAR NOT NULL,
+            name VARCHAR NOT NULL,
+            email VARCHAR NOT NULL,
+            gender VARCHAR NOT NULL,
+            dob DATE NOT NULL,
             enabled BIT 
         )
         """
@@ -34,10 +34,10 @@ public interface UserDao {
     @GetGeneratedKeys("id")
     Long insertUser(@Bind("username") String username, @Bind("password") String password, @Bind("name") String name, @Bind("email") String email, @Bind("gender") User.Gender gender, @Bind("dob") LocalDate dob,@Bind("enabled") boolean enabled);
 
-
+    //most ezt fogjuk csak használni
     @SqlUpdate("INSERT INTO usertable VALUES(:id, :username, :password, :name, :email, :gender, :dob, :enabled)")
     @GetGeneratedKeys("id")
-    Long insertUser(@BindBean User user); 
+    Long insertUser(@BindBean User user);
 
     @SqlQuery("SELECT * FROM usertable WHERE id =:id")
     Optional<User> findById(@Bind("id") long id);
@@ -46,9 +46,9 @@ public interface UserDao {
     @SqlQuery("SELECT * FROM usertable WHERE username = :username")
     Optional<User> findByUsername(@Bind("username") String username);
 
-    @SqlUpdate("DELETE * FROM usertable WHERE  id = :id")
-    void delete(@Bind("id") Long id); //????
+    @SqlUpdate("DELETE FROM usertable where username = :username")
+    void delete(@BindBean User user); //username will be unique because of constraint
 
-    @SqlQuery("SELECT * FROM usertable ORDER BY username")
+    @SqlQuery("SELECT * FROM usertable ORDER BY id")
     List<User> listUsers();
 }

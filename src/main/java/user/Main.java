@@ -26,13 +26,48 @@ public class Main {
                             .enabled(true)
                             .build();
 
+           User user2 = User.builder()
+                    .username("themoonischeese")
+                    .password("topsecret")
+                    .name("Lord Shaxx")
+                    .email("ls@valahol.com")
+                    .gender(User.Gender.MALE)
+                    .dob(LocalDate.parse("1961-05-16"))
+                    .enabled(false)
+                    .build();
+
+           User user3 = User.builder()
+                    .username("revenge")
+                    .password("liza")
+                    .name("Skandar Graun")
+                    .email("orderandchaos@valahol.com")
+                    .gender(User.Gender.MALE)
+                    .dob(LocalDate.parse("1920-11-11"))
+                    .enabled(true)
+                    .build();
+
+            User user4 = User.builder()
+                    .username("shieldmaiden")
+                    .password("bjornironside")
+                    .name("Lagertha")
+                    .email("kattegat@valahol.com")
+                    .gender(User.Gender.FEMALE)
+                    .dob(LocalDate.parse("1710-01-01"))
+                    .enabled(false)
+                    .build();
+
+
+
            dao.insertUser(user1);
+           dao.insertUser(user2);
+           dao.insertUser(user3);
+           dao.insertUser(user4);
 
-            dao.listUsers().stream().forEach(System.out::println);
+
+           dao.delete(user1);
+           dao.listUsers().stream().forEach(System.out::println);
+           dao.findByUsername("shieldmaiden").stream().forEach(System.out::println);
+           dao.findById(3).stream().forEach(System.out::println);
         }
-
-
-
-
     }
 }
