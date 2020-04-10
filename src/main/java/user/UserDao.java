@@ -17,7 +17,7 @@ public interface UserDao {
 
     @SqlUpdate("""
         CREATE TABLE usertable (
-            id IDENTITY PRIMARY KEY,
+            id IDENTITY,
             username VARCHAR UNIQUE NOT NULL,
             password VARCHAR NOT NULL,
             name VARCHAR NOT NULL,
@@ -34,7 +34,7 @@ public interface UserDao {
     @GetGeneratedKeys("id")
     Long insertUser(@Bind("username") String username, @Bind("password") String password, @Bind("name") String name, @Bind("email") String email, @Bind("gender") User.Gender gender, @Bind("dob") LocalDate dob,@Bind("enabled") boolean enabled);
 
-    //most ezt fogjuk csak használni
+    //most ezt fogjuk csak használni a 2 insert közül
     @SqlUpdate("INSERT INTO usertable VALUES(:id, :username, :password, :name, :email, :gender, :dob, :enabled)")
     @GetGeneratedKeys("id")
     Long insertUser(@BindBean User user);

@@ -11,11 +11,12 @@ public class Main {
     public static void main(String[] args) {
         Jdbi jdbi = Jdbi.create("jdbc:h2:mem:usertest");
         jdbi.installPlugin(new SqlObjectPlugin());
-        try (Handle handle = jdbi.open()) {
-            UserDao dao = handle.attach(UserDao.class); // mmegnyitom,lezárás automata
-
+        try (Handle handle = jdbi.open()) { // mmegnyitom,lezárás automata
+            UserDao dao = handle.attach(UserDao.class);
+            //létrehozom a táblát
             dao.createTable();
 
+            //példányosítok usereket
            User user1 = User.builder()
                             .username("iamcreative")
                             .password("secret")
@@ -57,13 +58,13 @@ public class Main {
                     .build();
 
 
-
+            //a példányosított usereket beszúrom a táblámba,így mostmár vannak sorok amikre meghívhatom a többi fveket
            dao.insertUser(user1);
            dao.insertUser(user2);
            dao.insertUser(user3);
            dao.insertUser(user4);
 
-
+            //fvek kipróbálása
            dao.delete(user1);
            dao.listUsers().stream().forEach(System.out::println);
            dao.findByUsername("shieldmaiden").stream().forEach(System.out::println);
