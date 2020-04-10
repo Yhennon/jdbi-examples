@@ -42,7 +42,7 @@ public class Main {
                     .name("Skandar Graun")
                     .email("orderandchaos@valahol.com")
                     .gender(User.Gender.MALE)
-                    .dob(LocalDate.parse("1920-11-11"))
+                    .dob(LocalDate.parse("1856-11-11"))
                     .enabled(true)
                     .build();
 
